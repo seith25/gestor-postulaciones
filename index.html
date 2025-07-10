@@ -39,15 +39,15 @@
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-
+        // --- PASO CLAVE: Pega tu objeto de configuración de Firebase aquí ---
+        // Este es un placeholder. Debes reemplazarlo con tu configuración real.
         const firebaseConfig = {
-        apiKey: "AIzaSyA9-ZzqQQ_g6GRjypCvxejshR6XH6_8hgY",
-        authDomain: "gestorpostulaciones.firebaseapp.com",
-        projectId: "gestorpostulaciones",
-        storageBucket: "gestorpostulaciones.firebasestorage.app",
-        messagingSenderId: "55548083191",
-        appId: "1:55548083191:web:e9ea65c68e955762b68cf2",
-        measurementId: "G-YY7JCLPPBY"
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
         };
         
         // Initialize Firebase
@@ -347,4 +347,42 @@
                             </div>
                         ) : (
                             applications.map(app => (
-                                <div key={app.id} className="bg-slate-800/80 backdrx|
+                                <div key={app.id} className="bg-slate-800/80 backdrop-blur-sm p-5 rounded-lg shadow-lg shadow-purple-900/10 border border-slate-700 hover:border-purple-500/50 transition-all duration-300">
+                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                                        <div className="flex-1 mb-4 sm:mb-0 mr-4">
+                                            <h3 className="text-lg font-bold text-white">{app.title}</h3>
+                                            <p className="text-gray-400">{app.company}</p>
+                                            <p className="text-sm text-gray-500 mt-1">
+                                                Aplicado el: {app.createdAt ? new Date(app.createdAt).toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Fecha no disponible'}
+                                            </p>
+                                            <a href={app.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-purple-400 hover:text-purple-300 text-sm mt-2 group transition">
+                                                <LinkIcon /> <span className="ml-2">Ver oferta original</span> <ExternalLinkIcon />
+                                            </a>
+                                        </div>
+                                        <div className="flex items-center space-x-3 w-full sm:w-auto">
+                                            <select
+                                                value={app.status}
+                                                onChange={(e) => updateStatus(app.id, e.target.value)}
+                                                className={`text-sm font-medium py-1 px-3 rounded-full border-2 appearance-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-purple-400 transition ${getStatusColor(app.status)}`}
+                                            >
+                                                {statusOptions.map(option => <option key={option} value={option}>{option}</option>)}
+                                            </select>
+                                            <button onClick={() => deleteApplication(app.id)} className="text-gray-500 hover:text-red-400 p-2 rounded-full hover:bg-red-500/10 transition-colors">
+                                                <TrashIcon />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+</html>
